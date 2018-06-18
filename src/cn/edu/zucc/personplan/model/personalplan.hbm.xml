@@ -1,0 +1,42 @@
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">  
+<hibernate-mapping package="cn.edu.zucc.personplan.model">
+    <!-- 标识一个类的xml映射,name为类名,table为表名 -->  
+    <class name="BeanPlan" table="tbl_plan">
+        <!-- 主键的设置,generator标识主键生成方式,因为native便于数据库的移植所以.嘿嘿!你懂的 -->  
+        <id name="planId" type="int">
+            <column name="plan_id"/>
+            <generator class="assigned"/>  
+        </id>  
+        <!-- 这里配了该类一个属性街道名称 name属性字段,column,数据库对应列 -->  
+        <property name="userId" type="string" column="user_id" />
+        <property name="planOrder" type="int" column="plan_order"/>
+        <property name="planName" type="string" column="plan_name"/>
+        <property name="createTime" type="timestamp" column="create_time"/>
+        <property name="stepCount" type="int" column="step_count"/>
+        <property name="startStepCount" type="int" column="start_step_count"/>
+        <property name="finishedStepCount" type="int" column="finished_step_count"/>
+    </class>
+
+    <class name="BeanStep" table="tbl_step">
+        <id name="stepId" type="int">
+            <column name="step_id"/>
+            <generator class="assigned"/>
+        </id>
+        <property name="planId" type="int" column="plan_id"/>
+        <property name="stepOrder" type="int" column="step_order"/>
+        <property name="stepName" type="string" column="step_name"/>
+        <property name="planBeginTime" type="timestamp" column="plan_begin_time"/>
+        <property name="planEndTime" type="timestamp" column="plan_end_time"/>
+        <property name="realBeginTime" type="timestamp" column="real_begin_time"/>
+        <property name="realEndTime" type="timestamp" column="real_end_time"/>
+    </class>
+
+    <class name="BeanUser" table="tbl_user">
+        <id name="userId" type="string">
+            <column name="user_id"/>
+            <generator class="assigned"/>
+        </id>
+        <property name="userPwd" type="string" column="user_pwd"/>
+        <property name="registerTime" type="timestamp" column="register_time"/>
+    </class>
+</hibernate-mapping>  
