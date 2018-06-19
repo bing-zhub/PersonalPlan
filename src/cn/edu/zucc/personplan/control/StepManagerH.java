@@ -90,12 +90,36 @@ public class StepManagerH implements IStepManager{
 
     @Override
     public void moveUp(BeanStep step) {
-
+        Session session = HBUtil.getSession();
+        Transaction tx = session.beginTransaction();
+        int selectedOrder = step.getStepOrder();
+        String hql = "from BeanStep b where b.stepOrder = :order and b.planId = :id";
+        Query query = session.createQuery(hql);
+        query.setParameter("order",selectedOrder-1);
+        query.setParameter("id",step.getPlanId());
+        BeanStep swapStep = (BeanStep) query.uniqueResult();
+        swapStep.setStepOrder(selectedOrder);
+        step.setStepOrder(selectedOrder-1);
+        session.update(step);
+        tx.commit();
+        session.close();
     }
 
     @Override
     public void moveDown(BeanStep step) {
-
+        Session session = HBUtil.getSession();
+        Transaction tx = session.beginTransaction();
+        int selectedOrder = step.getStepOrder();
+        String hql = "from BeanStep b where b.stepOrder = :order and b.planId = :id";
+        Query query = session.createQuery(hql);
+        query.setParameter("order",selectedOrder+1);
+        query.setParameter("id",step.getPlanId());
+        BeanStep swapStep = (BeanStep) query.uniqueResult();
+        swapStep.setStepOrder(selectedOrder);
+        step.setStepOrder(selectedOrder+1);
+        session.update(step);
+        tx.commit();
+        session.close();
     }
 
     public static void main(String[] args) {
@@ -107,6 +131,7 @@ public class StepManagerH implements IStepManager{
         for (BeanStep bs : result){
             s = bs;
         }
-        stepManagerH.finishStep(s);
+        System.out.println(s.getStepId());
+        stepManagerH.moveUp(s);
     }
 }
