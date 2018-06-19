@@ -918,169 +918,202 @@
       <Charset>utf8mb4</Charset>
       <DefaultForCharset>0</DefaultForCharset>
     </collation>
-    <table id="232" parent="8" name="tbl_plan">
+    <table id="232" parent="8" name="tbl_admin">
+      <Engine>InnoDB</Engine>
+    </table>
+    <table id="233" parent="8" name="tbl_plan">
       <Engine>InnoDB</Engine>
       <Collation>utf8_general_ci</Collation>
     </table>
-    <table id="233" parent="8" name="tbl_step">
+    <table id="234" parent="8" name="tbl_step">
       <Engine>InnoDB</Engine>
       <Collation>utf8_general_ci</Collation>
     </table>
-    <table id="234" parent="8" name="tbl_user">
+    <table id="235" parent="8" name="tbl_user">
       <Engine>InnoDB</Engine>
       <Collation>utf8_general_ci</Collation>
     </table>
-    <column id="235" parent="232" name="plan_id">
+    <column id="236" parent="232" name="admin_id">
+      <Position>1</Position>
+      <DataType>varchar(50)|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="237" parent="232" name="admin_pwd">
+      <Position>2</Position>
+      <DataType>varchar(255)|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="238" parent="232" name="register_time">
+      <Position>3</Position>
+      <DataType>datetime|0</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="239" parent="232" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>admin_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="240" parent="233" name="plan_id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="236" parent="232" name="user_id">
+    <column id="241" parent="233" name="user_id">
       <Position>2</Position>
       <Comment>计划所属用户id</Comment>
       <DataType>varchar(50)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="237" parent="232" name="plan_order">
+    <column id="242" parent="233" name="plan_order">
       <Position>3</Position>
       <Comment>计划序号，要求同一个用户下序号不重复</Comment>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="238" parent="232" name="plan_name">
+    <column id="243" parent="233" name="plan_name">
       <Position>4</Position>
       <Comment>计划名称</Comment>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="239" parent="232" name="create_time">
+    <column id="244" parent="233" name="create_time">
       <Position>5</Position>
       <DataType>datetime|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="240" parent="232" name="step_count">
+    <column id="245" parent="233" name="step_count">
       <Position>6</Position>
       <Comment>步骤总数据</Comment>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="241" parent="232" name="start_step_count">
+    <column id="246" parent="233" name="start_step_count">
       <Position>7</Position>
       <Comment>已经开始的步骤数</Comment>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="242" parent="232" name="finished_step_count">
+    <column id="247" parent="233" name="finished_step_count">
       <Position>8</Position>
       <Comment>已经完成的步骤数</Comment>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="243" parent="232" name="user_id">
+    <index id="248" parent="233" name="user_id">
       <ColNames>user_id
 plan_order</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="244" parent="232" name="PRIMARY">
+    <key id="249" parent="233" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>plan_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="245" parent="232" name="user_id">
+    <key id="250" parent="233" name="user_id">
       <ColNames>user_id
 plan_order</ColNames>
       <UnderlyingIndexName>user_id</UnderlyingIndexName>
     </key>
-    <column id="246" parent="233" name="step_id">
+    <column id="251" parent="234" name="step_id">
       <Position>1</Position>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="247" parent="233" name="plan_id">
+    <column id="252" parent="234" name="plan_id">
       <Position>2</Position>
       <Comment>所属计划编号</Comment>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="248" parent="233" name="step_order">
+    <column id="253" parent="234" name="step_order">
       <Position>3</Position>
       <Comment>步骤序号，要求同一计划下步骤序号不重复</Comment>
       <DataType>int(11)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="249" parent="233" name="step_name">
+    <column id="254" parent="234" name="step_name">
       <Position>4</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="250" parent="233" name="plan_begin_time">
+    <column id="255" parent="234" name="plan_begin_time">
       <Position>5</Position>
       <Comment>计划开始时间</Comment>
       <DataType>datetime|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="251" parent="233" name="plan_end_time">
+    <column id="256" parent="234" name="plan_end_time">
       <Position>6</Position>
       <Comment>计划结束时间</Comment>
       <DataType>datetime|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="252" parent="233" name="real_begin_time">
+    <column id="257" parent="234" name="real_begin_time">
       <Position>7</Position>
       <Comment>实际开始时间</Comment>
       <DataType>datetime|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="253" parent="233" name="real_end_time">
+    <column id="258" parent="234" name="real_end_time">
       <Position>8</Position>
       <Comment>实际结束时间</Comment>
       <DataType>datetime|0</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="254" parent="233" name="plan_id">
+    <index id="259" parent="234" name="plan_id">
       <ColNames>plan_id
 step_order</ColNames>
     </index>
-    <key id="255" parent="233" name="PRIMARY">
+    <key id="260" parent="234" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>step_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="256" parent="234" name="user_id">
+    <column id="261" parent="235" name="user_id">
       <Position>1</Position>
       <DataType>varchar(50)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="257" parent="234" name="user_pwd">
+    <column id="262" parent="235" name="user_pwd">
       <Position>2</Position>
       <DataType>varchar(255)|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="258" parent="234" name="register_time">
+    <column id="263" parent="235" name="register_time">
       <Position>3</Position>
       <DataType>datetime|0</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="259" parent="234" name="PRIMARY">
+    <column id="264" parent="235" name="is_valid">
+      <Position>4</Position>
+      <DataType>tinyint(1)|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;1&apos;</DefaultExpression>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="265" parent="235" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>user_id</ColNames>
       <Primary>1</Primary>

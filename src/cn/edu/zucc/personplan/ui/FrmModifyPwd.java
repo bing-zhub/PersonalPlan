@@ -13,7 +13,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import javax.swing.JTextField;
 
 import cn.edu.zucc.personplan.PersonPlanUtil;
 import cn.edu.zucc.personplan.model.BeanUser;
@@ -44,7 +43,7 @@ public class FrmModifyPwd extends JDialog implements ActionListener {
 		workPane.add(labelPwd2);
 		workPane.add(edtPwd2);
 		this.getContentPane().add(workPane, BorderLayout.CENTER);
-		this.setSize(300, 180);
+		this.setSize(300, 230);
 		this.btnCancel.addActionListener(this);
 		this.btnOk.addActionListener(this);
 	}

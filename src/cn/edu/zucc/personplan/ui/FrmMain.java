@@ -23,8 +23,10 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import cn.edu.zucc.personplan.PersonPlanUtil;
+import cn.edu.zucc.personplan.control.AdminManager;
 import cn.edu.zucc.personplan.model.BeanPlan;
 import cn.edu.zucc.personplan.model.BeanStep;
+import cn.edu.zucc.personplan.model.BeanUser;
 import cn.edu.zucc.personplan.util.BaseException;
 
 
@@ -47,6 +49,7 @@ public class FrmMain extends JFrame implements ActionListener {
     private JMenuItem  menuItem_moveDownStep=new JMenuItem("步骤下移");
     
     private JMenuItem  menuItem_modifyPwd=new JMenuItem("密码修改");
+    private JMenuItem  menuItem_ManageUser = new JMenuItem("用户管理");
     
     private JMenuItem  menuItem_static1=new JMenuItem("统计1");
     
@@ -120,6 +123,7 @@ public class FrmMain extends JFrame implements ActionListener {
 	    this.menu_step.add(this.menuItem_moveDownStep); this.menuItem_moveDownStep.addActionListener(this);
 	    this.menu_static.add(this.menuItem_static1); this.menuItem_static1.addActionListener(this);
 	    this.menu_more.add(this.menuItem_modifyPwd); this.menuItem_modifyPwd.addActionListener(this);
+	    this.menu_more.add(this.menuItem_ManageUser); this.menuItem_ManageUser.addActionListener(this);
 	    
 	    menubar.add(menu_plan);
 	    menubar.add(menu_step);
@@ -252,6 +256,16 @@ public class FrmMain extends JFrame implements ActionListener {
 		else if(e.getSource()==this.menuItem_modifyPwd){
 			FrmModifyPwd dlg=new FrmModifyPwd(this,"密码修改",true);
 			dlg.setVisible(true);
+		}
+		else if(e.getSource()==this.menuItem_ManageUser){
+			AdminManager adminManager = new AdminManager();
+			boolean is = adminManager.isAdmin();
+			if(!is){
+				JOptionPane.showMessageDialog(null, "没有此权限", "错误",JOptionPane.ERROR_MESSAGE);
+			}else{
+				FrmUserManage dlg = new FrmUserManage(this,"用户管理",true);
+				dlg.setVisible(true);
+			}
 		}
 	}
 }

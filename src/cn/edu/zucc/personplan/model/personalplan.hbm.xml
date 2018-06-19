@@ -38,5 +38,8 @@
         </id>
         <property name="userPwd" type="string" column="user_pwd"/>
         <property name="registerTime" type="timestamp" column="register_time"/>
+        <property name="isValid" type="boolean" column="is_valid"/>
+        <property name="isAdmin" type="boolean" column="is_admin"/>
     </class>
+
 </hibernate-mapping>  

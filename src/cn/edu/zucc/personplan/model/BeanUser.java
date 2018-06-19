@@ -5,7 +5,8 @@ public class BeanUser {
 	private String userId;
 	private String userPwd;
 	private java.sql.Timestamp registerTime;
-
+	private boolean isValid = true;
+	private boolean isAdmin = false;
 
 	public String getUserId() {
 		return userId;
@@ -33,9 +34,21 @@ public class BeanUser {
 		this.registerTime = registerTime;
 	}
 
-	public BeanUser userForDebug(BeanUser b){
-		b.setUserId("admin");
-		b.setUserPwd("admin");
-		return b;
+	public void setValid(boolean isValid){
+		this.isValid = isValid;
 	}
+
+	public boolean getValid() {
+		return isValid;
+	}
+
+	public void setAdmin(boolean isAdmin){
+		this.isAdmin = isAdmin;
+	}
+
+	public boolean getAdmin() {
+		return isAdmin;
+	}
+
+
 }
