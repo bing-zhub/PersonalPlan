@@ -68,12 +68,24 @@ public class StepManagerH implements IStepManager{
 
     @Override
     public void startStep(BeanStep step) {
-
+        Session session = HBUtil.getSession();
+        Transaction tx = session.beginTransaction();
+        BeanStep beanStep = session.get(BeanStep.class,step.getStepId());
+        beanStep.setRealBeginTime(new Timestamp(System.currentTimeMillis()));
+        session.update(beanStep);
+        tx.commit();
+        session.close();
     }
 
     @Override
     public void finishStep(BeanStep step) {
-
+        Session session = HBUtil.getSession();
+        Transaction tx = session.beginTransaction();
+        BeanStep beanStep = session.get(BeanStep.class,step.getStepId());
+        beanStep.setRealEndTime(new Timestamp(System.currentTimeMillis()));
+        session.update(beanStep);
+        tx.commit();
+        session.close();
     }
 
     @Override
@@ -95,6 +107,6 @@ public class StepManagerH implements IStepManager{
         for (BeanStep bs : result){
             s = bs;
         }
-        stepManagerH.deleteStep(s);
+        stepManagerH.finishStep(s);
     }
 }
