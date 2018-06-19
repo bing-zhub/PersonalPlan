@@ -47,12 +47,23 @@ public class StepManagerH implements IStepManager{
 
     @Override
     public List<BeanStep> loadSteps(BeanPlan plan) {
-        return null;
+        Session session = HBUtil.getSession();
+        List<BeanStep> result = new ArrayList<BeanStep>();
+        String hql = "from BeanStep b where b.planId = :id";
+        Query query = session.createQuery(hql);
+        query.setParameter("id",plan.getPlanId());
+        result = (List<BeanStep>)query.list();
+        session.close();
+        return result;
     }
 
     @Override
     public void deleteStep(BeanStep step) {
-
+        Session session = HBUtil.getSession();
+        Transaction tx = session.beginTransaction();
+        session.delete(step);
+        tx.commit();
+        session.close();
     }
 
     @Override
@@ -73,5 +84,17 @@ public class StepManagerH implements IStepManager{
     @Override
     public void moveDown(BeanStep step) {
 
+    }
+
+    public static void main(String[] args) {
+        BeanPlan b = new BeanPlan();
+        b.setPlanId(1);
+        StepManagerH stepManagerH = new StepManagerH();
+        List<BeanStep> result = stepManagerH.loadSteps(b);
+        BeanStep s = new BeanStep();
+        for (BeanStep bs : result){
+            s = bs;
+        }
+        stepManagerH.deleteStep(s);
     }
 }
