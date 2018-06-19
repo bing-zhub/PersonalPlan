@@ -251,7 +251,11 @@ public class FrmMain extends JFrame implements ActionListener {
 			}
 		}
 		else if(e.getSource()==this.menuItem_static1){
-			
+			if(this.curPlan==null) {
+				JOptionPane.showMessageDialog(null, "请选择计划", "错误",JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			FrmChart dlg = new FrmChart(this.curPlan);
 		}
 		else if(e.getSource()==this.menuItem_modifyPwd){
 			FrmModifyPwd dlg=new FrmModifyPwd(this,"密码修改",true);

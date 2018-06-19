@@ -16,6 +16,8 @@
       <root url="jar://$PROJECT_DIR$/../DatabaseSystem/lib/mysql-connector-java-5.1.27-bin.jar!/" />
       <root url="jar://$PROJECT_DIR$/../DatabaseSystem/lib/mysql-connector-java-5.1.46-bin.jar!/" />
       <root url="jar://$PROJECT_DIR$/../DatabaseSystem/lib/mysql-connector-java-5.1.46.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jfreechart-1.0.19.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jcommon-1.0.23.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
