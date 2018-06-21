@@ -17,7 +17,7 @@ public class BeanPlan {
 	public String getCell(int col){
 		if(col==0) return Integer.toString(this.planOrder);
 		else if(col==1) return this.planName;
-		else if(col==2) return Integer.toString(this.startStepCount);
+		else if(col==2) return Integer.toString(this.stepCount);
 		else if(col==3) return Integer.toString(this.finishedStepCount);
 		else if(col==4) return this.createTime.toString();
 		else return "";

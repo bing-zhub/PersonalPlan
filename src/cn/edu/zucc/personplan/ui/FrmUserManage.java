@@ -28,7 +28,7 @@ public class FrmUserManage extends JDialog implements ActionListener {
         super(f, s, b);
         toolBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
         this.getContentPane().add(workPane, BorderLayout.CENTER);
-        this.setSize(150, 420);
+        this.setSize(150, 430);
         list.setPreferredSize(new Dimension(150, 200));
         list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         list.setListData(adminManager.loadAllUsrs());

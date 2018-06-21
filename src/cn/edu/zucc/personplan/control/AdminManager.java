@@ -3,6 +3,8 @@ package cn.edu.zucc.personplan.control;
 import cn.edu.zucc.personplan.model.BeanUser;
 import cn.edu.zucc.personplan.util.BaseException;
 import cn.edu.zucc.personplan.util.DBUtil;
+import com.sun.xml.internal.rngom.parse.host.Base;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -86,6 +88,16 @@ public class AdminManager {
                 throw new BaseException("该用户已经创建计划,不可删除,删除计划后继续");
             }
 
+            sql = "SELECT is_valid FROM tbl_user WHERE user_id = ?";
+            pst = conn.prepareStatement(sql);
+            pst.setString(1,userId);
+            rs = pst.executeQuery();
+            if(rs.next()){
+                if(rs.getBoolean(1)==false){
+                    throw new BaseException("都已经被删了,你还要他怎样");
+                }
+            }
+
             sql = "UPDATE tbl_user SET is_valid = FALSE WHERE user_id = ?";
             pst = conn.prepareStatement(sql);
             pst.setString(1,userId);
@@ -162,7 +174,7 @@ public class AdminManager {
             pst.setString(1,userId);
             rs = pst.executeQuery();
             if(rs.next()){
-                if(rs.getBoolean(5)==true){
+                if(rs.getBoolean(5)==false){
                     throw new BaseException("本来不是管理员,瞎设置什么");
                 }
             }

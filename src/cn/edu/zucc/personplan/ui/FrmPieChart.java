@@ -11,8 +11,8 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.ChartPanel;
 import javax.swing.*;
 
-public class FrmChart extends JFrame{
-    public FrmChart(BeanPlan curPlan){
+public class FrmPieChart extends JFrame{
+    public FrmPieChart(BeanPlan curPlan){
         DefaultPieDataset DataSet = new DefaultPieDataset();
         ChartManager chartManager = new ChartManager();
         DataSet.setValue("开始但未结束", chartManager.getNotFinishedCount(curPlan));

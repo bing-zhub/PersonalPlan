@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ChartManager {
     public int getFinishedStepCount (BeanPlan curPlan) {
@@ -81,10 +83,27 @@ public class ChartManager {
         return result;
     }
 
+    public Map<String,Float> getAllPlanRate () {
+        Connection connection = null;
+        Map<String,Float> result = new HashMap<String,Float>();
+        try{
+            connection = DBUtil.getConnection();
+            String sql = "SELECT plan_name,finished_step_count/step_count FROM tbl_plan";
+            PreparedStatement pst = connection.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            while(rs.next()){
+                result.put(rs.getString(1),rs.getFloat(2));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     public static void main(String[] args) {
-        BeanPlan b = new BeanPlan();
-        b.setPlanId(1);
-        int re = new ChartManager().getBeginNotSetCount(b);
-        System.out.println(re);
+        Map<String,Float> result = new ChartManager().getAllPlanRate();
+        for (Map.Entry<String,Float> entry:result.entrySet()){
+            System.out.println(entry.getKey()+" "+entry.getValue());
+        }
     }
 }

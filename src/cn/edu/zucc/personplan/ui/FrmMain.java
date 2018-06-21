@@ -26,7 +26,6 @@ import cn.edu.zucc.personplan.PersonPlanUtil;
 import cn.edu.zucc.personplan.control.AdminManager;
 import cn.edu.zucc.personplan.model.BeanPlan;
 import cn.edu.zucc.personplan.model.BeanStep;
-import cn.edu.zucc.personplan.model.BeanUser;
 import cn.edu.zucc.personplan.util.BaseException;
 
 
@@ -51,7 +50,8 @@ public class FrmMain extends JFrame implements ActionListener {
     private JMenuItem  menuItem_modifyPwd=new JMenuItem("密码修改");
     private JMenuItem  menuItem_ManageUser = new JMenuItem("用户管理");
     
-    private JMenuItem  menuItem_static1=new JMenuItem("统计1");
+    private JMenuItem  menuItem_static1=new JMenuItem("所选计划统计");
+    private JMenuItem  menuItem_static2=new JMenuItem("所有计划统计");
     
     
 	private FrmLogin dlgLogin=null;
@@ -90,8 +90,10 @@ public class FrmMain extends JFrame implements ActionListener {
 	private void reloadPlanStepTabel(int planIdx){
 		if(planIdx<0) return;
 		curPlan=allPlan.get(planIdx);
+		System.out.println(curPlan.getPlanName());
 		try {
 			planSteps=PersonPlanUtil.stepManager.loadSteps(curPlan);
+			System.out.println(planSteps.get(0).getStepName());
 		} catch (BaseException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
 			return;
@@ -122,6 +124,7 @@ public class FrmMain extends JFrame implements ActionListener {
 	    this.menu_step.add(this.menuItem_moveUpStep); this.menuItem_moveUpStep.addActionListener(this);
 	    this.menu_step.add(this.menuItem_moveDownStep); this.menuItem_moveDownStep.addActionListener(this);
 	    this.menu_static.add(this.menuItem_static1); this.menuItem_static1.addActionListener(this);
+	    this.menu_static.add(this.menuItem_static2); this.menuItem_static2.addActionListener(this);
 	    this.menu_more.add(this.menuItem_modifyPwd); this.menuItem_modifyPwd.addActionListener(this);
 	    this.menu_more.add(this.menuItem_ManageUser); this.menuItem_ManageUser.addActionListener(this);
 	    
@@ -133,16 +136,15 @@ public class FrmMain extends JFrame implements ActionListener {
 	    
 	    this.getContentPane().add(new JScrollPane(this.dataTablePlan), BorderLayout.WEST);
 	    this.dataTablePlan.addMouseListener(new MouseAdapter (){
-
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int i=FrmMain.this.dataTablePlan.getSelectedRow();
 				if(i<0) {
 					return;
 				}
+				System.out.println("reload");
 				FrmMain.this.reloadPlanStepTabel(i);
 			}
-	    	
 	    });
 	    this.getContentPane().add(new JScrollPane(this.dataTableStep), BorderLayout.CENTER);
 	    
@@ -181,7 +183,6 @@ public class FrmMain extends JFrame implements ActionListener {
 			FrmAddStep dlg=new FrmAddStep(this,"添加步骤",true);
 			dlg.plan=curPlan;
 			dlg.setVisible(true);
-//			FrmMain.this.reloadPlanStepTabel();
 		}
 		else if(e.getSource()==this.menuItem_DeleteStep){
 			int i=FrmMain.this.dataTableStep.getSelectedRow();
@@ -255,7 +256,10 @@ public class FrmMain extends JFrame implements ActionListener {
 				JOptionPane.showMessageDialog(null, "请选择计划", "错误",JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			FrmChart dlg = new FrmChart(this.curPlan);
+			FrmPieChart dlg = new FrmPieChart(this.curPlan);
+		}
+		else if (e.getSource()==this.menuItem_static2){
+			FrmBarChart frmBarChart = new FrmBarChart();
 		}
 		else if(e.getSource()==this.menuItem_modifyPwd){
 			FrmModifyPwd dlg=new FrmModifyPwd(this,"密码修改",true);

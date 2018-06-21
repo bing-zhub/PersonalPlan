@@ -48,9 +48,9 @@ public class StepManager implements IStepManager {
             pst.setTimestamp(5,new Timestamp(sdf.parse(planfinishdate).getTime()));
             pst.executeUpdate();
 
-//            pst = conn.prepareStatement("UPDATE tbl_plan SET step_count = step_count + 1 WHERE plan_id = ?");
-//            pst.setInt(1,plan.getPlanId());
-//            pst.executeUpdate();
+            pst = conn.prepareStatement("UPDATE tbl_plan SET step_count = tbl_plan.step_count + 1 WHERE plan_id = ?");
+            pst.setInt(1,plan.getPlanId());
+            pst.executeUpdate();
         }catch (SQLException e){
             e.printStackTrace();
         }catch (ParseException e){
@@ -113,6 +113,10 @@ public class StepManager implements IStepManager {
             pst = conn.prepareStatement("UPDATE tbl_plan SET step_count = step_count - 1 WHERE plan_id = ?");
             pst.setInt(1,step.getPlanId());
             pst.executeUpdate();
+
+            pst = conn.prepareStatement("UPDATE tbl_plan SET step_count = step_count - 1 WHERE plan_id = ?");
+            pst.setInt(1,step.getPlanId());
+            pst.executeUpdate();
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -126,6 +130,10 @@ public class StepManager implements IStepManager {
             PreparedStatement pst = conn.prepareStatement("UPDATE tbl_step SET real_begin_time = ? WHERE step_id = ?");
             pst.setTimestamp(1,new Timestamp(System.currentTimeMillis()));
             pst.setInt(2,step.getStepId());
+            pst.executeUpdate();
+
+            pst = conn.prepareStatement("UPDATE tbl_plan SET start_step_count = start_step_count + 1 WHERE plan_id = ?");
+            pst.setInt(1,step.getPlanId());
             pst.executeUpdate();
         }catch (SQLException e){
             e.printStackTrace();
@@ -141,6 +149,10 @@ public class StepManager implements IStepManager {
             PreparedStatement pst = conn.prepareStatement("UPDATE tbl_step SET real_end_time = ? WHERE step_id = ?");
             pst.setTimestamp(1,new Timestamp(System.currentTimeMillis()));
             pst.setInt(2,step.getStepId());
+            pst.executeUpdate();
+
+            pst = conn.prepareStatement("UPDATE tbl_plan SET finished_step_count = finished_step_count + 1 WHERE plan_id = ?");
+            pst.setInt(1,step.getPlanId());
             pst.executeUpdate();
         }catch (SQLException e){
             e.printStackTrace();
@@ -185,7 +197,8 @@ public class StepManager implements IStepManager {
 
             pst = conn.prepareStatement("SELECT max(step_order) FROM tbl_step WHERE step_id = ?");
             pst.setInt(1,step.getPlanId());
-            int last = pst.executeQuery().getInt(1);
+            ResultSet rs = pst.executeQuery();
+            int last = rs.getInt(1);
             if(last==step.getStepOrder()){
                 throw new BaseException("已是最后后一个步骤不可后移");
             }
