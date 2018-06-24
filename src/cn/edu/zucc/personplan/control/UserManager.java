@@ -76,6 +76,10 @@ public class UserManager implements IUserManager {
                 if(!pwdC.equals(pwd)){
                     throw new BaseException("账号密码不匹配");
                 }
+                boolean isValid = rs.getBoolean(4);
+                if(!isValid){
+                    throw new BaseException("当前账户无效");
+                }
             }
 
             beanUser.setUserPwd(pwd);

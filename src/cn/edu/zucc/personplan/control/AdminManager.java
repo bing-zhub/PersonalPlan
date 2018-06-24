@@ -88,13 +88,17 @@ public class AdminManager {
                 throw new BaseException("该用户已经创建计划,不可删除,删除计划后继续");
             }
 
-            sql = "SELECT is_valid FROM tbl_user WHERE user_id = ?";
+            sql = "SELECT * FROM tbl_user WHERE user_id = ?";
             pst = conn.prepareStatement(sql);
             pst.setString(1,userId);
             rs = pst.executeQuery();
             if(rs.next()){
-                if(rs.getBoolean(1)==false){
+                if(rs.getBoolean(4)==false){
                     throw new BaseException("都已经被删了,你还要他怎样");
+                }
+
+                if(rs.getBoolean(5)==true){
+                    throw new BaseException("目前还是管理员,不能删除");
                 }
             }
 
@@ -149,6 +153,9 @@ public class AdminManager {
             if(rs.next()){
                 if(rs.getBoolean(5)==true){
                     throw new BaseException("早就是管理员,瞎设置什么");
+                }
+                if(rs.getBoolean(4)==false){
+                    throw new BaseException("不可用,恢复用户后重试");
                 }
             }
 
