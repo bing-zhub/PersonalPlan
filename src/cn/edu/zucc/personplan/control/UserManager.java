@@ -18,21 +18,21 @@ public class UserManager implements IUserManager {
     public BeanUser reg(String userid, String pwd,String pwd2) throws BaseException {
         // TODO Auto-generated method stub
         if(userid.length() == 0){
-            throw new BaseException("ç”¨æˆ·åä¸ºç©º,è¯·å¡«å…¥ç”¨æˆ·å");
+            throw new BaseException("ÓÃ»§ÃûÎª¿Õ,ÇëÌîÈëÓÃ»§Ãû");
         }
 
         if(pwd.length() == 0){
-            throw new BaseException("å¯†ç ä¸ºç©º,è¯·è¾“å…¥å¯†ç ");
+            throw new BaseException("ÃÜÂëÎª¿Õ,ÇëÊäÈëÃÜÂë");
         }
 
         if(pwd.length() <6){
-            throw new BaseException("å¯†ç é•¿åº¦è¿‡çŸ­,è¯·å¢åŠ é•¿åº¦");
+            throw new BaseException("ÃÜÂë³¤¶È¹ı¶Ì,ÇëÔö¼Ó³¤¶È");
         }else if(pwd.length()>=20){
-            throw new BaseException("å¯†ç é•¿åº¦è¿‡é•¿,è¯·å‡å°‘é•¿åº¦");
+            throw new BaseException("ÃÜÂë³¤¶È¹ı³¤,Çë¼õÉÙ³¤¶È");
         }
 
         if(!pwd.equals(pwd2)){
-            throw new BaseException("ä¸¤æ¬¡å¯†ç è¾“å…¥ä¸ç›¸åŒ,è¯·æŸ¥è¯åé‡è¯•");
+            throw new BaseException("Á½´ÎÃÜÂëÊäÈë²»ÏàÍ¬,Çë²éÖ¤ºóÖØÊÔ");
         }
 
         Connection conn = null;
@@ -43,7 +43,7 @@ public class UserManager implements IUserManager {
             pst.setString(2,pwd);
             pst.setTimestamp(3,new java.sql.Timestamp(System.currentTimeMillis()));
             int n = pst.executeUpdate();
-            System.out.println(n+"ä¸ªç”¨æˆ·å®Œæˆæ³¨å†Œ");
+            System.out.println(n+"¸öÓÃ»§Íê³É×¢²á");
 
         }catch (SQLException e){
             e.printStackTrace();
@@ -59,14 +59,14 @@ public class UserManager implements IUserManager {
         Connection conn = null;
         try{
             conn = DBUtil.getConnection();
-            // æŸ¥è¯¢ç”¨æˆ·æ˜¯å¦å­˜åœ¨
+            // ²éÑ¯ÓÃ»§ÊÇ·ñ´æÔÚ
             PreparedStatement pst = conn.prepareStatement("SELECT * FROM tbl_user WHERE user_id = ?");
             pst.setString(1,userid);
             ResultSet rs = pst.executeQuery();
             if(!rs.next())
-                throw new BaseException("è´¦æˆ·ä¸å­˜åœ¨,è¯·åˆ›å»ºåå†æ¬¡ç™»å½•");
+                throw new BaseException("ÕË»§²»´æÔÚ,Çë´´½¨ºóÔÙ´ÎµÇÂ¼");
 
-            //æŸ¥è¯¢å¯†ç  éªŒè¯è´¦æˆ·å¯†ç æ˜¯å¦åŒ¹é…
+            //²éÑ¯ÃÜÂë ÑéÖ¤ÕË»§ÃÜÂëÊÇ·ñÆ¥Åä
             conn.prepareStatement("SELECT user_id,user_pwd FROM tbl_user WHERE user_id = ?");
             pst.setString(1,userid);
             rs = pst.executeQuery();
@@ -74,11 +74,11 @@ public class UserManager implements IUserManager {
             if(rs.next()){
                 String pwdC = rs.getString(2);
                 if(!pwdC.equals(pwd)){
-                    throw new BaseException("è´¦å·å¯†ç ä¸åŒ¹é…");
+                    throw new BaseException("ÕËºÅÃÜÂë²»Æ¥Åä");
                 }
                 boolean isValid = rs.getBoolean(4);
                 if(!isValid){
-                    throw new BaseException("å½“å‰è´¦æˆ·æ— æ•ˆ");
+                    throw new BaseException("µ±Ç°ÕË»§ÎŞĞ§");
                 }
             }
 
@@ -99,7 +99,7 @@ public class UserManager implements IUserManager {
         try{
             conn = DBUtil.getConnection();
             if(!newPwd.equals(newPwd2)){
-                throw new BaseException("ä¸¤æ¬¡å¯†ç è¾“å…¥ä¸ä¸€è‡´,æ£€æŸ¥åé‡è¯•");
+                throw new BaseException("Á½´ÎÃÜÂëÊäÈë²»Ò»ÖÂ,¼ì²éºóÖØÊÔ");
             }
 
             PreparedStatement pst = conn.prepareStatement("SELECT user_pwd from tbl_user WHERE user_id = ?");
@@ -111,7 +111,7 @@ public class UserManager implements IUserManager {
                 pst.setString(1,newPwd);
                 pst.setString(2,user.getUserId());
                 int n = pst.executeUpdate();
-                System.out.println("æ›´æ–°äº†"+n+"æ¡ä¿¡æ¯");
+                System.out.println("¸üĞÂÁË"+n+"ÌõĞÅÏ¢");
             }
         }catch (SQLException e){
             e.printStackTrace();

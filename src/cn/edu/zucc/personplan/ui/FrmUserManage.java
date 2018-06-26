@@ -3,6 +3,7 @@ package cn.edu.zucc.personplan.ui;
 import cn.edu.zucc.personplan.control.AdminManager;
 import cn.edu.zucc.personplan.model.BeanUser;
 import cn.edu.zucc.personplan.util.BaseException;
+import com.sun.codemodel.internal.JOp;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -59,25 +60,34 @@ public class FrmUserManage extends JDialog implements ActionListener {
             for (int i: indices){
                 temp = temp + listModel.getElementAt(i)+" ";
             }
-            JOptionPane.showConfirmDialog(null,"是否要重置用户"+temp+"的密码?");
-            for (int index : indices) {
-                System.out.println(listModel.getElementAt(index));
-                adminManager.resetPwd(listModel.getElementAt(index));
+            int choice = JOptionPane.showConfirmDialog(null,"是否要重置用户"+temp+"的密码?","是",JOptionPane.YES_NO_OPTION);
+            if(choice == JOptionPane.YES_OPTION){
+                for (int index : indices) {
+                    System.out.println(listModel.getElementAt(index));
+                    adminManager.resetPwd(listModel.getElementAt(index));
+                }
+            }else{
+                return;
             }
         }else if(e.getSource()==this.btnDelUsr){
             String temp = "";
             for (int i: indices){
                 temp = temp + listModel.getElementAt(i)+" ";
             }
-            JOptionPane.showConfirmDialog(null,"是否要删除用户"+temp);
-            try {
-                for (int index: indices) {
-                    adminManager.deleteUsr(listModel.getElementAt(index));
+            int choice = JOptionPane.showConfirmDialog(this,"是否要删除用户"+temp,"Warning",JOptionPane.YES_NO_OPTION);
+            if(choice == JOptionPane.YES_OPTION){
+                try {
+                    for (int index: indices) {
+                        adminManager.deleteUsr(listModel.getElementAt(index));
+                    }
+                }catch (BaseException err) {
+                    JOptionPane.showMessageDialog(null, err.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
-            }catch (BaseException err) {
-                JOptionPane.showMessageDialog(null, err.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
+            }else{
                 return;
             }
+
         }else if(e.getSource()==this.btnRecover){
             for (int i : indices){
                 try{
@@ -91,26 +101,32 @@ public class FrmUserManage extends JDialog implements ActionListener {
             for (int i: indices){
                 temp = temp + listModel.getElementAt(i)+" ";
             }
-            JOptionPane.showConfirmDialog(null,"是否将用户"+temp+"设置为管理员?");
-            for (int i : indices){
-                try{
-                    adminManager.setAdmin(listModel.getElementAt(i));
-                }catch (BaseException err){
-                    JOptionPane.showMessageDialog(null, "用户"+listModel.getElementAt(i)+err.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
-                }
+            int choice = JOptionPane.showConfirmDialog(null,"是否将用户"+temp+"设置为管理员?","Warning",JOptionPane.YES_NO_OPTION);
+            if(choice == JOptionPane.YES_OPTION)
+                for (int i : indices){
+                    try{
+                        adminManager.setAdmin(listModel.getElementAt(i));
+                    }catch (BaseException err){
+                        JOptionPane.showMessageDialog(null, "用户"+listModel.getElementAt(i)+err.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
+                    }
+                }else{
+                return;
             }
         }else if(e.getSource()==this.btnResetAdmin){
             String temp = "";
             for (int i: indices){
                 temp = temp + listModel.getElementAt(i)+" ";
             }
-            JOptionPane.showConfirmDialog(null,"是否将用户"+temp+"取消管理员?");
-            for (int i : indices){
-                try{
-                    adminManager.resetAdmin(listModel.getElementAt(i));
-                }catch (BaseException err){
-                    JOptionPane.showMessageDialog(null, "用户"+listModel.getElementAt(i)+err.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
-                }
+            int choice = JOptionPane.showConfirmDialog(null,"是否将用户"+temp+"取消管理员?","Warning",JOptionPane.YES_NO_OPTION);
+            if(choice==JOptionPane.YES_OPTION)
+                for (int i : indices){
+                    try{
+                        adminManager.resetAdmin(listModel.getElementAt(i));
+                    }catch (BaseException err){
+                        JOptionPane.showMessageDialog(null, "用户"+listModel.getElementAt(i)+err.getMessage(), "错误",JOptionPane.ERROR_MESSAGE);
+                    }
+                }else{
+                return;
             }
         }
     }

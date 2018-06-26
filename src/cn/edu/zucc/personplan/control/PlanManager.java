@@ -98,8 +98,8 @@ public class PlanManager implements IPlanManager{
             if(plan.getPlanOrder()!=maxOrder){
                 pst = conn.prepareStatement("UPDATE tbl_plan SET plan_order = plan_order -1 WHERE user_id = ? AND plan_order > ?");
                 pst.setString(1,beanUser.getUserId());
-                pst.setInt(2,plan.getPlanOrder()-1);
-                rs = pst.executeQuery();
+                pst.setInt(2,plan.getPlanOrder());
+                pst.executeUpdate();
             }
 
 

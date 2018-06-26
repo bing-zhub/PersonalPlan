@@ -102,6 +102,15 @@ public class AdminManager {
                 }
             }
 
+            sql = "SELECT count(user_id) FROM tbl_user WHERE is_valid = TRUE ";
+            pst = conn.prepareStatement(sql);
+            rs = pst.executeQuery();
+            if(rs.next()){
+                if(rs.getInt(1)==1){
+                    throw new BaseException("别再删了,至少留一个用户吧");
+                }
+            }
+
             sql = "UPDATE tbl_user SET is_valid = FALSE WHERE user_id = ?";
             pst = conn.prepareStatement(sql);
             pst.setString(1,userId);

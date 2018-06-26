@@ -100,6 +100,23 @@ public class ChartManager {
         return result;
     }
 
+    public Map<String,Integer> getAllCount () {
+        Connection connection = null;
+        Map<String,Integer> result = new HashMap<String,Integer>();
+        try{
+            connection = DBUtil.getConnection();
+            String sql = "SELECT plan_name,step_count FROM tbl_plan";
+            PreparedStatement pst = connection.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            while(rs.next()){
+                result.put(rs.getString(1),rs.getInt(2));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     public static void main(String[] args) {
         Map<String,Float> result = new ChartManager().getAllPlanRate();
         for (Map.Entry<String,Float> entry:result.entrySet()){

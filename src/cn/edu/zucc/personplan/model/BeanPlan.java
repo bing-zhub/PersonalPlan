@@ -11,15 +11,14 @@ public class BeanPlan {
 	private int stepCount;
 	private int startStepCount;
 	private int finishedStepCount;
-	public static final String[] tableTitles={"序号","名称","步骤数","已完成数","添加时间"};
+	public static final String[] tableTitles={"序号","名称","步骤数","添加时间"};
 
 
 	public String getCell(int col){
 		if(col==0) return Integer.toString(this.planOrder);
 		else if(col==1) return this.planName;
 		else if(col==2) return Integer.toString(this.stepCount);
-		else if(col==3) return Integer.toString(this.finishedStepCount);
-		else if(col==4) return this.createTime.toString();
+		else if(col==3) return this.createTime.toString();
 		else return "";
 	}
 

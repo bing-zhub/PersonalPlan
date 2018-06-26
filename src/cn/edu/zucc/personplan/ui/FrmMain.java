@@ -26,6 +26,7 @@ import cn.edu.zucc.personplan.PersonPlanUtil;
 import cn.edu.zucc.personplan.control.AdminManager;
 import cn.edu.zucc.personplan.model.BeanPlan;
 import cn.edu.zucc.personplan.model.BeanStep;
+import cn.edu.zucc.personplan.model.BeanUser;
 import cn.edu.zucc.personplan.util.BaseException;
 
 
@@ -59,13 +60,31 @@ public class FrmMain extends JFrame implements ActionListener {
 	
 	private Object tblPlanTitle[]=BeanPlan.tableTitles;
 	private Object tblPlanData[][];
-	DefaultTableModel tabPlanModel=new DefaultTableModel();
+	DefaultTableModel tabPlanModel=new DefaultTableModel() {
+		@Override
+		public boolean isCellEditable(int row, int column) {
+			if (column == 1) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	};
 	private JTable dataTablePlan=new JTable(tabPlanModel);
 	
 	
 	private Object tblStepTitle[]=BeanStep.tblStepTitle;
 	private Object tblStepData[][];
-	DefaultTableModel tabStepModel=new DefaultTableModel();
+	DefaultTableModel tabStepModel=new DefaultTableModel(){
+		@Override
+		public boolean isCellEditable(int row, int column) {
+			if (column == 1) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	};
 	private JTable dataTableStep=new JTable(tabStepModel);
 	
 	private BeanPlan curPlan=null;
@@ -90,10 +109,8 @@ public class FrmMain extends JFrame implements ActionListener {
 	private void reloadPlanStepTabel(int planIdx){
 		if(planIdx<0) return;
 		curPlan=allPlan.get(planIdx);
-		System.out.println(curPlan.getPlanName());
 		try {
 			planSteps=PersonPlanUtil.stepManager.loadSteps(curPlan);
-			System.out.println(planSteps.get(0).getStepName());
 		} catch (BaseException e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "´íÎó",JOptionPane.ERROR_MESSAGE);
 			return;
@@ -139,19 +156,23 @@ public class FrmMain extends JFrame implements ActionListener {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int i=FrmMain.this.dataTablePlan.getSelectedRow();
+				int j=FrmMain.this.dataTablePlan.getSelectedColumn();
+				System.out.println(i+" "+j);
 				if(i<0) {
 					return;
 				}
-				System.out.println("reload");
 				FrmMain.this.reloadPlanStepTabel(i);
+
 			}
+
+
 	    });
 	    this.getContentPane().add(new JScrollPane(this.dataTableStep), BorderLayout.CENTER);
 	    
 	    this.reloadPlanTable();
 	    //×´Ì¬À¸
 	    statusBar.setLayout(new FlowLayout(FlowLayout.LEFT));
-	    JLabel label=new JLabel("ÄúºÃ!");//ÐÞ¸Ä³É   ÄúºÃ£¡+µÇÂ½ÓÃ»§Ãû
+	    JLabel label=new JLabel("ÄúºÃ! "+ BeanUser.currentLoginUser.getUserId());//ÐÞ¸Ä³É   ÄúºÃ£¡+µÇÂ½ÓÃ»§Ãû
 	    statusBar.add(label);
 	    this.getContentPane().add(statusBar,BorderLayout.SOUTH);
 	    this.addWindowListener(new WindowAdapter(){   
@@ -166,6 +187,7 @@ public class FrmMain extends JFrame implements ActionListener {
 		if(e.getSource()==this.menuItem_AddPlan){
 			FrmAddPlan dlg=new FrmAddPlan(this,"Ìí¼Ó¼Æ»®",true);
 			dlg.setVisible(true);
+			this.reloadPlanTable();
 		}
 		else if(e.getSource()==this.menuItem_DeletePlan){
 			if(this.curPlan==null) {
@@ -174,24 +196,30 @@ public class FrmMain extends JFrame implements ActionListener {
 			}
 			try {
 				PersonPlanUtil.planManager.deletePlan(this.curPlan);
+				this.reloadPlanTable();
 			} catch (BaseException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), "´íÎó",JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 		}
 		else if(e.getSource()==this.menuItem_AddStep){
+			int i=FrmMain.this.dataTableStep.getSelectedRow();
+			int j=FrmMain.this.dataTablePlan.getSelectedRow();
 			FrmAddStep dlg=new FrmAddStep(this,"Ìí¼Ó²½Öè",true);
 			dlg.plan=curPlan;
 			dlg.setVisible(true);
+			reloadPlanStepTabel(i);
+			reloadPlanTable();
 		}
 		else if(e.getSource()==this.menuItem_DeleteStep){
-			int i=FrmMain.this.dataTableStep.getSelectedRow();
+			int i=FrmMain.this.dataTablePlan.getSelectedRow();
 			if(i<0) {
 				JOptionPane.showMessageDialog(null, "ÇëÑ¡Ôñ²½Öè", "´íÎó",JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			try {
 				PersonPlanUtil.stepManager.deleteStep(this.planSteps.get(i));
+				reloadPlanStepTabel(i);
 			} catch (BaseException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), "´íÎó",JOptionPane.ERROR_MESSAGE);
 				return;
@@ -205,6 +233,7 @@ public class FrmMain extends JFrame implements ActionListener {
 			}
 			try {
 				PersonPlanUtil.stepManager.startStep(this.planSteps.get(i));
+				reloadPlanStepTabel(i);
 			} catch (BaseException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), "´íÎó",JOptionPane.ERROR_MESSAGE);
 				return;
@@ -218,6 +247,7 @@ public class FrmMain extends JFrame implements ActionListener {
 			}
 			try {
 				PersonPlanUtil.stepManager.finishStep(this.planSteps.get(i));
+				reloadPlanStepTabel(1);
 			} catch (BaseException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), "´íÎó",JOptionPane.ERROR_MESSAGE);
 				return;
@@ -231,7 +261,7 @@ public class FrmMain extends JFrame implements ActionListener {
 			}
 			try {
 				PersonPlanUtil.stepManager.moveUp(this.planSteps.get(i));
-				reloadPlanTable();
+				this.reloadPlanTable();
 				reloadPlanStepTabel(this.planSteps.get(1).getPlanId()-1);
 			} catch (BaseException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), "´íÎó",JOptionPane.ERROR_MESSAGE);
@@ -246,6 +276,7 @@ public class FrmMain extends JFrame implements ActionListener {
 			}
 			try {
 				PersonPlanUtil.stepManager.moveDown(this.planSteps.get(i));
+				reloadPlanStepTabel(1);
 			} catch (BaseException e1) {
 				JOptionPane.showMessageDialog(null, e1.getMessage(), "´íÎó",JOptionPane.ERROR_MESSAGE);
 				return;

@@ -24,8 +24,9 @@ public class FrmLogin extends JDialog implements ActionListener {
 	private JButton btnLogin = new JButton("µÇÂ¼");
 	private JButton btnCancel = new JButton("ÍË³ö");
 	private JButton btnRegister = new JButton("×¢²á");
-	private Icon user = new ImageIcon("/Users/bing/Documents/DBMS Project/src/cn/edu/zucc/personplan/asset/user.png");
-	private Icon lock = new ImageIcon("/Users/bing/Documents/DBMS Project/src/cn/edu/zucc/personplan/asset/lock.png");
+	java.net.URL base = this.getClass().getResource("");
+	private Icon user = new ImageIcon("cn/edu/zucc/personplan/ui/asset/user.png");
+	private Icon lock = new ImageIcon("cn/edu/zucc/personplan/ui/asset/lock.png");
 
 	private JLabel labelUser = new JLabel();
 	private JLabel labelPwd = new JLabel();
@@ -65,6 +66,7 @@ public class FrmLogin extends JDialog implements ActionListener {
 				System.exit(0);
 			}
 		});
+		System.out.println(base);
 	}
 
 	@Override
